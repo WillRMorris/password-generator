@@ -1,6 +1,8 @@
 // Assignments
-var letters = ["A","B","C","D","E","F","G","H","I","J","K",
+var upLetters = ["A","B","C","D","E","F","G","H","I","J","K",
 "L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+var lowLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", 
+"k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var specials = [
   " ", "!", `"`, "#", "$", "%", "&", "'", 
@@ -13,20 +15,27 @@ var password = "";
 var passwordLength= "50";
 var hasNumbers = false;
 var hasSpecials = false;
-var hasLetters = false;
+var hasUpLetters = false;
+var hasLowLetters = false;
+
 
 // references
 var questionPop = document.querySelector("#questions-pop");
 var questionClose = document.querySelector("#q-close");
 var numCheck = document.getElementById("num-check");
-var letterCheck = document.getElementById("letter-check");
+var upLetterCheck = document.getElementById("up-letter-check");
+var lowLetterCheck = document.getElementById("low-letter-check");
 var specCheck = document.getElementById("spec-check");
 var stringLength = document.getElementById("string-length");
 var generateBtn = document.querySelector("#generate");
 
 //function to grab random value from each array
-function getLetter() {
-  random = letters[Math.floor(Math.random() * letters.length)];
+function getUpLetter() {
+  random = upLetters[Math.floor(Math.random() * upLetters.length)];
+  return;
+}
+function getLowLetter() {
+  random = lowLetters[Math.floor(Math.random() * lowLetters.length)];
   return;
 }
 function getNumber() {
@@ -41,28 +50,35 @@ function getSpecial() {
 function generatePassword() {
   // checks for invalid input and averts it
   passwordLength = Number(stringLength.value);
-  if (!hasLetters && !hasLetters && !hasSpecials){
-    hasLetters=true;
+  if (!hasUpLetters && !hasLowLetters && !hasLowLetters && !hasSpecials){
+    hasLowLetters=true;
   }
   if (typeof passwordLength != typeof 8 || passwordLength < 1) {
     passwordLength = 8;
+  }
+  else if (passwordLength > 128) {
+    passwordLength = 128;
   }
   // creates temporary cycle for randomization
   var ranCycle = [];
   var ranHolder;
 
+  // trouble shooting for password length
   console.log( "password length: " + passwordLength);
 
   //creates a placeholder for each array
   // that the user indicates they want in their password
-  if (hasLetters){
+  if (hasUpLetters){
     ranCycle.push (0);
   }
-  if (hasNumbers){
+  if (hasLowLetters){
     ranCycle.push (1);
   }
-  if (hasSpecials) {
+  if (hasNumbers){
     ranCycle.push (2);
+  }
+  if (hasSpecials) {
+    ranCycle.push (3);
   }
 
   // for desired length generates digits
@@ -70,30 +86,39 @@ function generatePassword() {
   for (i = 0; i< passwordLength; i++ ) {
     ranHolder = ranCycle [Math.floor(Math.random() * ranCycle.length)];
     if (ranHolder == 0) {
-      getLetter();
+      getUpLetter();
     }
     else if (ranHolder == 1) {
-      getNumber();
+      getLowLetter();
     }
     else if (ranHolder == 2) {
+      getNumber();
+    }
+    else if (ranHolder == 3) {
       getSpecial();
     }
     else {
       // for kicks and giggles if someone manages to brear this
       console.log ("how the hell you do that??");
     }
-    console.log ( "digit: " + random);
+    // adds the string value get functions pastes to temp var random to password
+    // which defaults as an empty string.
+    // value changes based on what value of ranCycle is placed in ranHolder
+    // ranHolder value decides which function is run.
     password += random;
+    console.log ( "digit: " + random);
   }
   return;
 }
 // Write password to the #password input
 function writePassword() {
   generatePassword();
+
+  // trouble shooting for password generation 
   console.log("password: " + password);
   var passwordText = document.querySelector("#password");
   passwordText.value = password;
-  
+
   //resets password
   password = "";
   return;
@@ -107,12 +132,21 @@ generateBtn.addEventListener("click",function(event) {
 });
 //adds event listener to buttons and checkmarks
 //for checkmarks, inverts boolean value on click, default of false
-letterCheck.addEventListener ("click", function(event) {
-  if (!hasLetters) {
-    hasLetters = true;
+upLetterCheck.addEventListener ("click", function(event) {
+  if (!hasUpLetters) {
+    hasUpLetters = true;
   }
-  else if(hasLetters) {
-    hasLetters = false;
+  else if(hasUpLetters) {
+    hasUpLetters = false;
+  }
+});
+
+lowLetterCheck.addEventListener ("click", function(event) {
+  if (!hasLowLetters) {
+    hasLowLetters = true;
+  }
+  else if(hasLowLetters) {
+    hasLowLetters = false;
   }
 });
 
