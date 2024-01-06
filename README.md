@@ -5,3 +5,8 @@ week three challenge password generator
 -requirements are displayed in a popup format, that is easy to interact with.
 code run smoothly with comments and console logs built in for troubleshooting.
 site asthetic is maintained. 
+
+-https://willrmorris.github.io/password-generator/ 
+
+
+-many stack overflow articles were consulted in the making of this code.
